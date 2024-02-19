@@ -15,5 +15,5 @@ COPY requirements.txt /code/
 # On exécute la commande permettant d'installer les dépendances (pip est compris dans l'image docker python:slim)
 RUN pip install -r requirements.txt
 # On copie le contenu de /src et le fichier .env dans le dossier de travail
-COPY ./myGym_BackEnd/ /code/
+COPY ./myGym_BackEnd/* /code/
 

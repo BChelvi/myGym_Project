@@ -27,7 +27,7 @@ services:
     build: # Ici on ne déclare pas d'image mais un build
       context: ./myGym_BackEnd/
       dockerfile: Dockerfile
-    command: python myGym_BackEnd/manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000
     #command: gunicorn --reload django_lesson_project.wsgi --bind 0.0.0.0
     volumes:
       - .:/code
