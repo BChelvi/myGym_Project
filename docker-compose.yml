@@ -3,6 +3,7 @@ version: '3'
 services:
   postgres:
     image: postgres:16
+    restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data
   #- ./dockerdata/postgres:/var/lib/postgresql/data => Si vous voulez gérer le volume dans votre dossier de projet
@@ -24,13 +25,11 @@ services:
 
 
   django:
-    build: # Ici on ne déclare pas d'image mais un build
-      context: ./myGym_BackEnd/
-      dockerfile: Dockerfile
+    container_name: backend
+    restart: always
+    build: ./myGym_BackEnd
     command: python manage.py runserver 0.0.0.0:8000
     #command: gunicorn --reload django_lesson_project.wsgi --bind 0.0.0.0
-    volumes:
-      - .:/code
     env_file: .env
     
     ports:
