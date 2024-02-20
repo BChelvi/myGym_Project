@@ -29,7 +29,7 @@ environ.Env.read_env(ENV_FILE)
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#gsrdld&kk#iu(9=o0$)5&l4k1*1l+62mgc&dd+^jdn6))*tc*'
+
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -49,12 +49,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "rest_framework",
     "django_filters",
-    'myGym_data'
+    'myGym_data',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -63,6 +65,15 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'myGym_BackEnd.urls'
+
+CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:4200',
+] # If this is used, then not need to use `CORS_ALLOW_ALL_ORIGINS = True`
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    'http://localhost:4200',
+]
 
 TEMPLATES = [
     {
