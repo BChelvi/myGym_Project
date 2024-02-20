@@ -45,6 +45,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:82"
+    depends_on:
+      - django
     # autres configurations pour Angular...
 
   # nginx:
