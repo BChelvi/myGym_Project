@@ -3,8 +3,9 @@ version: '3'
 services:
   postgres:
     image: postgres:16
+    restart: always
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_myGym:/var/lib/postgresql/data
   #- ./dockerdata/postgres:/var/lib/postgresql/data => Si vous voulez gérer le volume dans votre dossier de projet
     env_file: .env
     ports:
@@ -24,30 +25,40 @@ services:
 
 
   django:
-    build: # Ici on ne déclare pas d'image mais un build
-      context: ./myGym_BackEnd/
-      dockerfile: Dockerfile
-    command: python myGym_BackEnd/manage.py runserver 0.0.0.0:8000
+    container_name: backend
+    restart: always
+    build: ./myGym_BackEnd
+    command: python manage.py runserver 0.0.0.0:8000
     #command: gunicorn --reload django_lesson_project.wsgi --bind 0.0.0.0
-    volumes:
-      - .:/code
     env_file: .env
     
     ports:
-      - "8001:8000" # Le premier port est celui disponible sur votre PC # Le second est celui utilisé par docker dans son réseau
+      - "8000:8000" # Le premier port est celui disponible sur votre PC # Le second est celui utilisé par docker dans son réseau
     depends_on:
       postgres:
         condition: service_healthy
       # Ne se lancera pas tant que la DB n'est pas correctement lancée :)
 
-  # angular:
-  #   build: # Ici on ne déclare pas d'image mais un build
-  #     context: ./myGym_FrontEnd/
-  #     dockerfile: Dockerfile
+  angular:
+    build: # Ici on ne déclare pas d'image mais un build
+      context: ./myGym_FrontEnd/
+      dockerfile: Dockerfile
+    ports:
+      - "80:82"
+    depends_on:
+      - django
+    # autres configurations pour Angular...
+
+  # nginx:
+  #   image: nginx:alpine
   #   ports:
-  #     - "4200:4200"
-  #   # autres configurations pour Angular...
+  #     - "8080:80"
+  #   # volumes:
+  #   # - ./src:/usr/share/nginx/html
+  #   #   - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #   # depends_on:
+  #   #   - angular
 
 
 volumes:
-  postgres_data:
+  postgres_data_myGym:

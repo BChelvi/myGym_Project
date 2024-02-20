@@ -11,9 +11,8 @@ RUN apt-get update \
     && apt-get -y install libpq-dev gcc 
 
 # On copie le fichier requirements.txt dans notre dossier de travail
-COPY requirements.txt /code/
+COPY . /code/
 # On exécute la commande permettant d'installer les dépendances (pip est compris dans l'image docker python:slim)
 RUN pip install -r requirements.txt
 # On copie le contenu de /src et le fichier .env dans le dossier de travail
-COPY ./myGym_BackEnd/ /code/
 
