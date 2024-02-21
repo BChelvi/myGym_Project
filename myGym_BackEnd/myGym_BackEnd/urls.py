@@ -1,30 +1,21 @@
-"""
-URL configuration for myGym_BackEnd project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-
-from django.urls import path,include
-# from django.contrib.auth import views as auth_views
 from django.contrib import admin
-from myGym_data.views import UsersViewSet
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from myGym_data.views import UserViewSet, CustomTokenObtainPairView, WorkoutProgramViewSet, WeekProgramViewSet, SeriesViewSet, DayProgramViewSet, ExerciceViewSet, PerformanceViewSet, ProgressUserViewSet
+# from rest_framework.authtoken.views import ObtainAuthToken
 
 router = DefaultRouter()
-router.register(r'users', UsersViewSet, basename='user-list')
+router.register(r'users', UserViewSet)
+router.register(r'programs', WorkoutProgramViewSet)
+router.register(r'weeks', WeekProgramViewSet)
+router.register(r'series', SeriesViewSet)
+router.register(r'days', DayProgramViewSet)
+router.register(r'exercices', ExerciceViewSet)
+router.register(r'progress', ProgressUserViewSet)
+router.register(r'performances', PerformanceViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
+    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
 ]
