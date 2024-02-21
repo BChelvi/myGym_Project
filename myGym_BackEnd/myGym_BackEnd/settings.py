@@ -14,16 +14,11 @@ from pathlib import Path
 import os
 import environ
 
-# Chemin absolu vers le répertoire parent du répertoire courant
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Chemin absolu vers le fichier .env
-ENV_FILE = os.path.join(BASE_DIR.parent, '.env')
-
-# Charger les variables d'environnement à partir du fichier .env
 env = environ.Env()
-environ.Env.read_env(ENV_FILE)
-
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -50,7 +45,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_filters",
     'myGym_data',
-    'corsheaders'
+    'corsheaders',
+     'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -148,3 +144,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+}
